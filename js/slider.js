@@ -71,11 +71,13 @@
 	function bzl_prev_slide(options)
 	{
 
-		options.element_index = options.element_index - 1;
-		if(options.element_index < 0)
-		{
-			options.element_index = (options.div_count - 1);
-		}
+    if(options.element_index != 0){
+      options.element_index = options.element_index - 1;
+      if(options.element_index < 0)
+      {
+        options.element_index = (options.div_count - 1);
+      }
+    }
 
     if(options.fade){
 
@@ -128,13 +130,19 @@
 
 			$('.bzl-slider-next').click(function(){
 				bzl_next_slide(options);
+        $('.bzl_slide_button').removeClass('selected');
+        $('.bzl_slide_button:eq('+options.element_index+')').addClass('selected');
 			});
 
 			$('.bzl-slider-prev').click(function(){
-				bzl_prev_slide(options);
+				  bzl_prev_slide(options);
+          $('.bzl_slide_button').removeClass('selected');
+          $('.bzl_slide_button:eq('+options.element_index+')').addClass('selected');
 			});
 
 			$('.bzl_slide_button').click(function(){
+        $('.bzl_slide_button').removeClass('selected');
+        $(this).addClass('selected');
 				options.click = true;
 				var index = $(this).index();
 				options.element_index = index;
@@ -158,6 +166,8 @@
           slide_speed: 800,
           stop_navigate : true
 			  };
+
+    $('.bzl_slide_button:eq(0)').addClass('selected');
 
     $('.slide-panel').each(function(i, e){
       var thisPosition = $(e).parent('.slide-div').position();
@@ -196,7 +206,11 @@
 
 		if (opt.auto)
 		{
-			opt.trig = setInterval(function(){bzl_auto_slide(opt);}, opt.slide_duration);
+			opt.trig = setInterval(function(){
+        bzl_auto_slide(opt);
+        $('.bzl_slide_button').removeClass('selected');
+        $('.bzl_slide_button:eq('+opt.element_index+')').addClass('selected');
+      }, opt.slide_duration);
 			$('#bzl-play-stop').find('img').attr('src','images/stop.png');
 		}else
 		{
@@ -213,7 +227,11 @@
 			else
 			{
 				opt.auto = true;
-				opt.trig = setInterval(function(){bzl_auto_slide(opt);}, opt.slide_duration);
+				opt.trig = setInterval(function(){
+          bzl_auto_slide(opt);
+          $('.bzl_slide_button').removeClass('selected');
+          $('.bzl_slide_button:eq('+opt.element_index+')').addClass('selected');
+        }, opt.slide_duration);
 				$('#bzl-play-stop').find('img').attr('src','images/stop.png');
 			}
 		});
